@@ -33,11 +33,11 @@ function createNote() {
     document.getElementById("note-text").value = "";
 
     popupContainer.remove();
-    displayNote();
+    displayNotes();
   }
 }
 
-function displayNote() {
+function displayNotes() {
   const noteList = document.getElementById("notes-list");
   noteList.innerHTML = "";
   const notes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -69,6 +69,7 @@ function editNote(noteId) {
         <button id = "closeBtn" onclick = "closeEditPopup()"> Cancel </button>
     </div>
   </div>`;
+  document.body.appendChild(editingPopup)
 }
 function closeEditPopup() {
   const editingPopup = document.getElementById("editing-container");
@@ -84,17 +85,17 @@ function updateNote() {
     const noteId = editingPopup.getAttribute("data-note-id");
     let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-    const updateNote = notes.map((note) => {
-      if ((note.id = noteId)) {
-        return { id: noteId, text: noteText };
+    const updatedNotes = notes.map((note) => {
+      if (note.id == noteId) {
+        return { id: note.id, text: noteText };
       }
       return note;
     });
 
-    localStorage.setItem("notes", JSON.stringify(updateNote));
+    localStorage.setItem("notes", JSON.stringify(updatedNotes));
 
     editingPopup.remove();
-    displayNote();
+    displayNotes();
   }
 }
 
@@ -104,7 +105,7 @@ function deleteNote(noteId) {
 
   localStorage.setItem("notes", JSON.stringify(notes));
 
-  displayNote();
+  displayNotes();
 }
 
-displayNote();
+displayNotes();
